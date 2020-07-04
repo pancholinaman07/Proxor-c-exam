@@ -24,7 +24,7 @@ char* ip;
 
 
 //The val function convert postive decimal string to integer form and convert characters. 							 
-int val(char c)
+int hex_to_int(char c)
 {
 	 if(c>='0' && c<='9')
 	 	return (int)c - '0';  		
@@ -48,13 +48,13 @@ unsigned long int todeci(char *str,unsigned long int base)
 	for(i = len -1 ; i>=0 ; i--)			
 
 	{
-		if(val(str[i])>=base)
+		if(hex_to_int(str[i])>=base)
 		{
 			printf("invalid number");
 			return -1;
 		}
 		
-		num += val(str[i]) * power;
+		num +=  hex_to_int(str[i]) * power;
 		power = power * base;
 	
         }
