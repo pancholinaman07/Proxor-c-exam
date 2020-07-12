@@ -264,7 +264,7 @@ delete(argstr_buf,strlen(argstr_buf),count);
 else if(isNumber(argstr_buf))
 {
 		int x = 0;
-		while(*ip=='0') {ip++;x++;}
+		while((*ip=='0')||(*ip=='+')) {ip++;x++;}
 		delete(argstr_buf,strlen(argstr_buf),x);
    		printf("[Convert]\n");
 		printf("%lld",atoll(argstr_buf));
