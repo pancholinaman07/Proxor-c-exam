@@ -8,10 +8,10 @@
 #include "cmd.h"           // Command interpreter
 #include "cmtio.h"
 
+
 static char Welcome[] = "Command Interpreter\0";
 
-/* max binary digits */
-#define size_int 64
+
 
 char* ip;
 /* hex_to_int converts one hexadecimal digit passed in c into
@@ -23,79 +23,79 @@ char* ip;
  */
 
 
-//The val function convert postive decimal string to integer form and convert characters. 							 
+//The val function convert postive decimal string to integer form and convert characters.
 int val(char c)
 {
-	 if(c>='0' && c<='9')
-	 	return (int)c - '0';  		
-						
-	 else
-	 	return (int)c - 'a' + 10;	
+     if(c>='0' && c<='9')
+         return (int)c - '0';
+                        
+     else
+         return (int)c - 'a' + 10;
 
 
 }
 // todeci convert takes two parameters string and the base of that form and convert it into decimal by changing each char from back of the string by formulae => num += val(str[i]) * power , power = power * base
-		 															  
+                                                                       
 
 unsigned long int todeci(char *str,unsigned long int base)
 {
-	int len = strlen(str);
-	unsigned long int power = 1;
-	unsigned long int num = 0;
-	int i;
-	
-	
-	for(i = len -1 ; i>=0 ; i--)			
+    int len = strlen(str);
+    unsigned long int power = 1;
+    unsigned long int num = 0;
+    int i;
+    
+    
+    for(i = len -1 ; i>=0 ; i--)
 
-	{
-		if(val(str[i])>=base)
-		{
-			printf("invalid number");
-			return -1;
-		}
-		
-		num += val(str[i]) * power;
-		power = power * base;
-	
+    {
+        if(val(str[i])>=base)
+        {
+            printf("invalid number");
+            return -1;
         }
-	
+        
+        num += val(str[i]) * power;
+        power = power * base;
+    
+        }
+    
    return num;
 }
 
 // reval function its like opposite function takes decimal form and convert it into string.
 char reval(int num)
 {
-	if(num >= 0 && num<= 9)
-		return (char)(num + '0');
-	
-	else
-		return (char)(num - 10 + 'a');	
+    if(num >= 0 && num<= 9)
+        return (char)(num + '0');
+    
+    else
+        return (char)(num - 10 + 'a');
 }
 
 
 // strev function takes string and reverse it.
 void strev(char *str)
 {
-	int len = strlen(str);
-	int i;
-	for(i = 0;i<len/2;i++)
-	{
-		char temp = str[i];
-		str[i] = str[len - i - 1];
-		str[len-i-1] = temp; 
-	} 
-	
+    int len = strlen(str);
+    int i;
+    for(i = 0;i<len/2;i++)
+    {
+        char temp = str[i];
+        str[i] = str[len - i - 1];
+        str[len-i-1] = temp;
+    }
+    
 
 }
 
 
-typedef struct	{
-	size_t b : 1;
+typedef struct    {
+    size_t b : 1;
 }onebit;
 
 typedef struct {
-	char id[2];
-	onebit bit[size_int];
+    char id[2];
+    onebit bit[64];
 }binary_rep;
 
 
@@ -104,13 +104,13 @@ typedef struct {
 
 void binary_print(unsigned long int n,binary_rep B)
 {
-	printf("%c%c",B.id[0],B.id[1]);
-		if(n==0){printf("0");return;}
-	int i = 0;
-	while ((B.bit[i].b==0) && (i<size_int))i++;
-	if(i==size_int)return;
-	for(;i<size_int;i++)printf("%d",B.bit[i].b);
-	return;
+    printf("%c%c",B.id[0],B.id[1]);
+        if(n==0){printf("0");return;}
+    int i = 0;
+    while ((B.bit[i].b==0) && (i<64))i++;
+    if(i==64)return;
+    for(;i<64;i++)printf("%d",B.bit[i].b);
+    return;
 
 }
 
@@ -118,30 +118,30 @@ void binary_print(unsigned long int n,binary_rep B)
 binary_rep itob(unsigned long int n)
 {
 
-	unsigned long int norignal = n;
-	if (0 > n) {n = -1*n;n=n-1;}
-	binary_rep B;
-	B.id[0] = '0';
-	B.id[1] = 'b';
-	for(int i = size_int-1;i>=0;i--)
-	{
-		B.bit[i].b = n%2;
-		n = n/2;
-	}
-	if(0>norignal) {
-	
-	B.bit[0].b=1;
-	for (int i =1;i<size_int;i++)	{
-		
-		if(B.bit[i].b==0) {
-				B.bit[i].b=1;
-			} else {
-				B.bit[i].b=0;
-			}
-		
-		}
-	
-	}
+    unsigned long int norignal = n;
+    if (0 > n) {n = -1*n;n=n-1;}
+    binary_rep B;
+    B.id[0] = '0';
+    B.id[1] = 'b';
+    for(int i = 64-1;i>=0;i--)
+    {
+        B.bit[i].b = n%2;
+        n = n/2;
+    }
+    if(0>norignal) {
+    
+    B.bit[0].b=1;
+    for (int i =1;i<64;i++)    {
+        
+        if(B.bit[i].b==0) {
+                B.bit[i].b=1;
+            } else {
+                B.bit[i].b=0;
+            }
+        
+        }
+    
+    }
 return B;
 
 }
@@ -172,12 +172,12 @@ char * toHex(unsigned long int num){
     return buff;
 }
 // it will delete the first two characters of the string.
-void delete(char a[],int n,int x)
+void delete(char a[],int n,int x,int j)
 {
 
-	for(int i = 0;i<n-x;i++){
-		a[i] = a[i+x];
-	}		
+    for(int i = j;i<n-x;i++){
+        a[i] = a[i+x];
+    }
 
 for(int y=1;y<=x;y++)
 {
@@ -194,16 +194,16 @@ if(text[0]=='+'|text[0]=='-')
  x = 1;
 }
 else
-	 x = 0;
+     x = 0;
 
 int n = strlen(text);
 for(int i = x; i<n;i++)
 {
-	if(text[i]>= '0' && text[i]<='9')
-		continue;
-	
+    if(text[i]>= '0' && text[i]<='9')
+        continue;
+    
 
-	return 0;
+    return 0;
 
 }
 return 1;
@@ -224,65 +224,76 @@ return 1;
  */
 void cmd_cvt()
 {
-    /* 
+    /*
      * implement cmd_cvt here
      */
 int count =0;
 ip = argstr_buf;
 while(*ip==' ') {ip++;count++;}
-delete(argstr_buf,strlen(argstr_buf),count);
+delete(argstr_buf,strlen(argstr_buf),count,0);
 
-  if(argstr_buf[0]=='0' && argstr_buf[1]=='b')		
-               {	
-		printf("[Convert]\n");
-   		delete(argstr_buf,strlen(argstr_buf),2);
-   		printf("%lu",todeci(argstr_buf,2));
-   		printf(" ");
- 		printf("0b%s",argstr_buf);
-   		printf(" ");
-		char* b= toHex(todeci(argstr_buf,2));
-		printf("0x");
-		printf("%s\n",b);
-   		}
+  if(argstr_buf[0]=='0' && argstr_buf[1]=='b')
+               {
+        printf("[Convert]\n");
+           delete(argstr_buf,strlen(argstr_buf),2,0);
+           printf("%lu",todeci(argstr_buf,2));
+           printf(" ");
+         printf("0b%s",argstr_buf);
+           printf(" ");
+        char* b= toHex(todeci(argstr_buf,2));
+        printf("0x");
+        printf("%s\n",b);
+           }
 
 
 
   else if(argstr_buf[0]=='0' && argstr_buf[1]=='x')
-		{
-		printf("[Convert]\n");
-   		delete(argstr_buf,strlen(argstr_buf),2);
-   		printf("%lu",todeci(argstr_buf,16));
-   		printf(" ");
-   		unsigned long int n = todeci(argstr_buf,16);
-		binary_print(n,itob(n));
-   		printf(" ");
-   		printf("0x%s\n",argstr_buf);
-   		}
+        {
+        printf("[Convert]\n");
+           delete(argstr_buf,strlen(argstr_buf),2,0);
+           printf("%lu",todeci(argstr_buf,16));
+           printf(" ");
+           unsigned long int n = todeci(argstr_buf,16);
+        binary_print(n,itob(n));
+           printf(" ");
+           printf("0x%s\n",argstr_buf);
+           }
 
 
 
 else if(isNumber(argstr_buf))
 {
-		int x = 0;
-		while((*ip=='0')||(*ip=='+')) {ip++;x++;}
-		delete(argstr_buf,strlen(argstr_buf),x);
-   		printf("[Convert]\n");
-		printf("%lld",atoll(argstr_buf));
-		printf(" ");
-		unsigned long int n = strtoul(argstr_buf,NULL,0);
-		binary_print(n,itob(n));
-		printf(" ");
-		char* b= toHex(strtoul(argstr_buf,NULL,0));
-		printf("0x");
-		printf("%s\n",b);
+        if(*ip=='-'){
+        int x = 0;
+        ip++;
+        while(*ip=='0') {ip++;x++;}
+        delete(argstr_buf,strlen(argstr_buf),x,1);
+        }
+        else
+        {
+        int nam = 0;
+        while((*ip=='0') || (*ip == '+')) {ip++;nam++;}
+        delete(argstr_buf,strlen(argstr_buf),nam,0);
+        
+        }
+            
+           printf("[Convert]\n");
+        printf("%lld",atoll(argstr_buf));
+        printf(" ");
+        unsigned long int n = strtoul(argstr_buf,NULL,0);
+        binary_print(n,itob(n));
+        printf(" ");
+        char* b= toHex(strtoul(argstr_buf,NULL,0));
+        printf("0x");
+        printf("%s\n",b);
 }
 
 
 
 
 else
-	{printf("%s is not a digit\n",argstr_buf);}
-	
+    {printf("%s is not a digit\n",argstr_buf);}
+    
 }
 
 /*----------------------------------------------------------------------------
@@ -291,7 +302,7 @@ else
 void initialize_interpreter(void) {
     cmdb_init(TRUE);    // init a new command instance
     /* HINT: add command interpreter commands here */
-	cmdb_add_cmd("Cvt","Global","%s","input integer in base {2,10,16}","",cmd_cvt);
+    cmdb_add_cmd("Cvt","Global","%s","input integer in base {2,10,16}","",cmd_cvt);
 }
 
 /*----------------------------------------------------------------------------
@@ -332,3 +343,4 @@ int main(void)
     } //while
     return 0;
 }
+
